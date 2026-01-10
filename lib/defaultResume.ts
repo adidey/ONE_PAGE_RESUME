@@ -2,12 +2,12 @@ import { Resume } from '@/types/resume';
 
 export const defaultResume: Resume = {
     header: {
-        name: "Alex Johnson",
-        email: "alex.johnson@example.com",
+        name: "Aditya Dey",
+        email: "aditya.dey@example.com",
         phone: "(555) 123-4567",
-        linkedin: "linkedin.com/in/alexjohnson",
+        linkedin: "linkedin.com/in/adityadey",
         location: "San Francisco, CA",
-        portfolio: "alexjohnson.dev"
+        portfolio: "adityadey.dev"
     },
     summary: "Results-driven Software Engineer with 5+ years of experience in building scalable web applications. Proficient in React, Node.js, and cloud architecture. Passionate about clean code, performance optimization, and developer experience.",
     education: [
