@@ -1,10 +1,24 @@
+export interface CustomSectionItem {
+  title: string;
+  subtitle?: string;
+  date?: string;
+  bullets: string[];
+}
+
+export interface CustomSection {
+  id: string;
+  title: string;
+  items: CustomSectionItem[];
+}
+
 export interface Resume {
   header: {
     name: string;
     email: string;
+    phone: string;
     linkedin: string;
-    portfolio?: string;
     location: string;
+    portfolio: string;
   };
 
   summary: string;

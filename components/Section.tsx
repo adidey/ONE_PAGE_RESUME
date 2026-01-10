@@ -8,7 +8,7 @@ interface SectionProps {
 
 export function Section({ title, children, className = '' }: SectionProps) {
     return (
-        <section className={`mb-6 ${className}`}>
+        <section className={` ${className}`} style={{ marginBottom: 'var(--resume-section-gap, 1.5rem)' }}>
             <h2 className="text-lg font-bold border-b border-gray-300 mb-2 text-gray-900 uppercase tracking-wider">
                 {title}
             </h2>

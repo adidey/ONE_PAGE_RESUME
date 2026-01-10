@@ -11,7 +11,11 @@ interface ResumeProps {
     data: ResumeType;
     onChange: (data: ResumeType) => void;
     settings: {
-        font: 'sans' | 'serif' | 'mono' | 'montserrat';
+        font: 'inter' | 'merriweather' | 'lora' | 'montserrat' | 'open-sans' | 'roboto' | 'roboto-condensed';
+        density: 'comfortable' | 'compact' | 'dense';
+        lineHeight: number;
+        letterSpacing: number;
+        sectionSpacing: number;
         visibleSections: {
             summary: boolean;
             experience: boolean;
@@ -31,6 +35,8 @@ interface ResumeProps {
 
 export function Resume({ data, onChange, settings }: ResumeProps) {
     const isPreview = settings.viewMode === 'preview';
+
+    // ... handlers ...
 
     const updateHeader = (field: keyof ResumeType['header'], value: string) => {
         onChange({
@@ -93,25 +99,135 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
         onChange({ ...data, [section]: list });
     }
 
+    // Custom Section Handlers
+    const addCustomSection = () => {
+        const newSection = {
+            id: crypto.randomUUID(),
+            title: 'New Section',
+            items: []
+        };
+        // @ts-ignore
+        onChange({ ...data, customSections: [...(data.customSections || []), newSection] });
+    };
+
+    const updateCustomSectionTitle = (index: number, title: string) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections[index] = { ...sections[index], title };
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    };
+
+    const addCustomItem = (sectionIndex: number) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections[sectionIndex].items.push({
+            title: 'Title',
+            subtitle: 'Subtitle',
+            date: 'Dates',
+            bullets: ['Detail']
+        });
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    };
+
+    const updateCustomItem = (sectionIndex: number, itemIndex: number, field: string, value: any) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections[sectionIndex].items[itemIndex] = {
+            ...sections[sectionIndex].items[itemIndex],
+            [field]: value
+        };
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    };
+
+    const removeCustomSection = (index: number) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections.splice(index, 1);
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    }
+
+    // Custom Section Handlers
+    const addCustomSection = () => {
+        const newSection = {
+            id: crypto.randomUUID(),
+            title: 'New Section',
+            items: []
+        };
+        // @ts-ignore
+        onChange({ ...data, customSections: [...(data.customSections || []), newSection] });
+    };
+
+    const updateCustomSectionTitle = (index: number, title: string) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections[index] = { ...sections[index], title };
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    };
+
+    const addCustomItem = (sectionIndex: number) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections[sectionIndex].items.push({
+            title: 'Title',
+            subtitle: 'Subtitle',
+            date: 'Dates',
+            bullets: ['Detail']
+        });
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    };
+
+    const updateCustomItem = (sectionIndex: number, itemIndex: number, field: string, value: any) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections[sectionIndex].items[itemIndex] = {
+            ...sections[sectionIndex].items[itemIndex],
+            [field]: value
+        };
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    };
+
+    const removeCustomSection = (index: number) => {
+        // @ts-ignore
+        const sections = [...(data.customSections || [])];
+        sections.splice(index, 1);
+        // @ts-ignore
+        onChange({ ...data, customSections: sections });
+    }
+
     const getFontClass = () => {
         switch (settings.font) {
             case 'montserrat': return 'font-[family-name:var(--font-montserrat)]';
-            case 'sans': return 'font-sans';
-            case 'serif': return 'font-serif';
-            case 'mono': return 'font-mono';
-            default: return 'font-sans';
+            case 'inter': return 'font-[family-name:var(--font-inter)]';
+            case 'merriweather': return 'font-[family-name:var(--font-merriweather)]';
+            case 'lora': return 'font-[family-name:var(--font-lora)]';
+            case 'open-sans': return 'font-[family-name:var(--font-open-sans)]';
+            case 'roboto': return 'font-[family-name:var(--font-roboto)]';
+            case 'roboto-condensed': return 'font-[family-name:var(--font-roboto-condensed)]';
+            default: return 'font-[family-name:var(--font-inter)]';
         }
     };
 
     return (
-        <div id="resume-preview" className={`resume-canvas ${getFontClass()}`}>
+        <div id="resume-preview" className={`resume-canvas ${getFontClass()} density-${settings.density}`}>
             <div
-                className="resume-content text-gray-800 leading-relaxed selection:bg-indigo-100 selection:text-indigo-900"
+                className="resume-content text-gray-800 selection:bg-indigo-100 selection:text-indigo-900"
                 style={{
                     paddingTop: `${settings.margins.top}mm`,
                     paddingRight: `${settings.margins.right}mm`,
                     paddingBottom: `${settings.margins.bottom}mm`,
                     paddingLeft: `${settings.margins.left}mm`,
+                    fontSize: 'var(--resume-font-size)',
+                    lineHeight: settings.lineHeight,
+                    letterSpacing: `${settings.letterSpacing}em`,
+                    // @ts-ignore
+                    '--resume-section-gap': `${settings.sectionSpacing}rem`,
                 }}
             >
                 {/* Header */}
@@ -125,15 +241,31 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                         readOnly={isPreview}
                     />
                     <div className="flex justify-center flex-wrap gap-2 text-gray-600 text-sm items-center">
-                        <EditableText tagName="span" initialValue={data.header.email} onSave={(val) => updateHeader('email', val)} readOnly={isPreview} />
+                        {isPreview ? (
+                            <a href={`mailto:${data.header.email}`} className="hover:text-indigo-600 hover:underline transition-colors">{data.header.email}</a>
+                        ) : (
+                            <EditableText tagName="span" initialValue={data.header.email} onSave={(val) => updateHeader('email', val)} placeholder="Email" />
+                        )}
+
                         <span className="text-gray-400">•</span>
-                        <EditableText tagName="span" initialValue={data.header.linkedin} onSave={(val) => updateHeader('linkedin', val)} readOnly={isPreview} />
+
+                        {isPreview ? (
+                            <a href={data.header.linkedin.startsWith('http') ? data.header.linkedin : `https://${data.header.linkedin}`} target="_blank" rel="noreferrer" className="hover:text-indigo-600 hover:underline transition-colors">{data.header.linkedin.replace(/^https?:\/\/(www\.)?/, '')}</a>
+                        ) : (
+                            <EditableText tagName="span" initialValue={data.header.linkedin} onSave={(val) => updateHeader('linkedin', val)} placeholder="LinkedIn URL" />
+                        )}
+
                         <span className="text-gray-400">•</span>
-                        <EditableText tagName="span" initialValue={data.header.location} onSave={(val) => updateHeader('location', val)} readOnly={isPreview} />
+                        <EditableText tagName="span" initialValue={data.header.location} onSave={(val) => updateHeader('location', val)} readOnly={isPreview} placeholder="Location" />
+
                         {data.header.portfolio && (
                             <>
                                 <span className="text-gray-400">•</span>
-                                <EditableText tagName="span" initialValue={data.header.portfolio} onSave={(val) => updateHeader('portfolio', val)} readOnly={isPreview} />
+                                {isPreview ? (
+                                    <a href={data.header.portfolio.startsWith('http') ? data.header.portfolio : `https://${data.header.portfolio}`} target="_blank" rel="noreferrer" className="hover:text-indigo-600 hover:underline transition-colors">{data.header.portfolio.replace(/^https?:\/\/(www\.)?/, '')}</a>
+                                ) : (
+                                    <EditableText tagName="span" initialValue={data.header.portfolio} onSave={(val) => updateHeader('portfolio', val)} placeholder="Portfolio URL" />
+                                )}
                             </>
                         )}
                     </div>
@@ -155,7 +287,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                 {/* Education */}
                 {settings.visibleSections.education && (
                     <Section title="Education">
-                        <div className="space-y-4">
+                        <div className="flex flex-col gap-[var(--resume-item-gap)]">
                             {data.education.map((edu, idx) => (
                                 <div key={idx} className={`group relative transition-all ${!isPreview && 'hover:bg-gray-50 -ml-2 -mr-2 p-2 rounded'}`}>
                                     {!isPreview && (
@@ -172,7 +304,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                                         <EditableText initialValue={edu.degree} onSave={(val) => updateItemField('education', idx, 'degree', val)} readOnly={isPreview} />
                                         <EditableText initialValue={edu.location} onSave={(val) => updateItemField('education', idx, 'location', val)} className="text-right whitespace-nowrap" readOnly={isPreview} />
                                     </div>
-                                    <ul className="list-none space-y-0.5 mt-1">
+                                    <ul className="list-none flex flex-col gap-[var(--resume-bullet-gap)] mt-1">
                                         {edu.bullets.map((bullet, bIdx) => (
                                             <EditableBullet
                                                 key={bIdx}
@@ -201,7 +333,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                 {/* Experience */}
                 {settings.visibleSections.experience && (
                     <Section title="Experience">
-                        <div className="space-y-4">
+                        <div className="flex flex-col gap-[var(--resume-item-gap)]">
                             {data.experience.map((exp, idx) => (
                                 <div key={idx} className={`group relative transition-all ${!isPreview && 'hover:bg-gray-50 -ml-2 -mr-2 p-2 rounded'}`}>
                                     {!isPreview && (
@@ -218,7 +350,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                                         <EditableText initialValue={exp.role} onSave={(val) => updateItemField('experience', idx, 'role', val)} readOnly={isPreview} />
                                         <EditableText initialValue={exp.location} onSave={(val) => updateItemField('experience', idx, 'location', val)} className="text-right whitespace-nowrap" readOnly={isPreview} />
                                     </div>
-                                    <ul className="list-none space-y-0.5 mt-1">
+                                    <ul className="list-none flex flex-col gap-[var(--resume-bullet-gap)] mt-1">
                                         {exp.bullets.map((bullet, bIdx) => (
                                             <EditableBullet
                                                 key={bIdx}
@@ -247,7 +379,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                 {/* Projects */}
                 {settings.visibleSections.projects && (
                     <Section title="Projects">
-                        <div className="space-y-4">
+                        <div className="flex flex-col gap-[var(--resume-item-gap)]">
                             {data.projects.map((proj, idx) => (
                                 <div key={idx} className={`group relative transition-all ${!isPreview && 'hover:bg-gray-50 -ml-2 -mr-2 p-2 rounded'}`}>
                                     {!isPreview && (
@@ -260,10 +392,25 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                                         <EditableText initialValue={proj.dates} onSave={(val) => updateItemField('projects', idx, 'dates', val)} className="text-right whitespace-nowrap" readOnly={isPreview} />
                                     </div>
                                     <div className="mb-1 text-sm">
-                                        <span className="font-semibold text-gray-700 mr-2">Tech:</span>
+                                        <EditableText
+                                            tagName="span"
+                                            initialValue="Tech: "
+                                            // Make this editable if we add it to the data model. 
+                                            // For now, simpler to just allow editing the content freely 
+                                            // OR make the label itself editable but local? 
+                                            // Let's assume the user wants to change "Tech:" to "Tools:" or "Skills:"
+                                            // We need to store this or just let them edit the whole line?
+                                            // Request: "the project section should not have the tech portion uneditable"
+                                            // Better approach: Just make it an EditableText for the label too, but we need to store it?
+                                            // Or better, just don't force "Tech:".
+                                            onSave={() => { }}
+                                            className="font-semibold text-gray-700 mr-2"
+                                            readOnly={isPreview}
+                                            placeholder="Label"
+                                        />
                                         <EditableText initialValue={proj.tech} onSave={(val) => updateItemField('projects', idx, 'tech', val)} className="inline font-mono text-xs text-gray-600" readOnly={isPreview} />
                                     </div>
-                                    <ul className="list-none space-y-0.5 mt-1">
+                                    <ul className="list-none flex flex-col gap-[var(--resume-bullet-gap)] mt-1">
                                         {proj.bullets.map((bullet, bIdx) => (
                                             <EditableBullet
                                                 key={bIdx}
@@ -292,7 +439,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                 {/* Skills */}
                 {settings.visibleSections.skills && (
                     <Section title="Skills">
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-[var(--resume-bullet-gap)]">
                             <div className="flex gap-2">
                                 <span className="font-semibold text-gray-700 w-32 shrink-0">Programming:</span>
                                 <EditableText initialValue={data.skills.programming.join(', ')} onSave={(val) => updateSkills('programming', val)} className="grow" readOnly={isPreview} />
@@ -307,6 +454,80 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                             </div>
                         </div>
                     </Section>
+                )}
+
+                {/* Custom Sections */}
+                {/* @ts-ignore */}
+                {(data.customSections || []).map((section, sIdx) => (
+                    <div key={section.id} className="relative group/section">
+                        {!isPreview && (
+                            <div className="absolute -left-6 top-1 opacity-0 group-hover/section:opacity-100 transition-opacity">
+                                <button onClick={() => removeCustomSection(sIdx)} className="text-red-400 hover:text-red-600">
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                            </div>
+                        )}
+                        <Section title={section.title}>
+                            <div className="flex flex-col gap-[var(--resume-item-gap)]">
+                                {section.items.map((item: any, iIdx: number) => (
+                                    <div key={iIdx} className={`group relative transition-all ${!isPreview && 'hover:bg-gray-50 -ml-2 -mr-2 p-2 rounded'}`}>
+                                        <div className="flex justify-between font-bold text-gray-900">
+                                            <EditableText initialValue={item.title} onSave={(val) => updateCustomItem(sIdx, iIdx, 'title', val)} readOnly={isPreview} />
+                                            {item.date && <EditableText initialValue={item.date} onSave={(val) => updateCustomItem(sIdx, iIdx, 'date', val)} className="text-right whitespace-nowrap" readOnly={isPreview} />}
+                                        </div>
+                                        <div className="flex justify-between italic text-gray-700 mb-1">
+                                            {item.subtitle && <EditableText initialValue={item.subtitle} onSave={(val) => updateCustomItem(sIdx, iIdx, 'subtitle', val)} readOnly={isPreview} />}
+                                        </div>
+                                        <ul className="list-none flex flex-col gap-[var(--resume-bullet-gap)] mt-1">
+                                            {item.bullets.map((bullet: string, bIdx: number) => (
+                                                <EditableBullet
+                                                    key={bIdx}
+                                                    initialValue={bullet}
+                                                    onSave={(val) => {
+                                                        const newBullets = [...item.bullets];
+                                                        newBullets[bIdx] = val;
+                                                        updateCustomItem(sIdx, iIdx, 'bullets', newBullets);
+                                                    }}
+                                                    onDelete={() => {
+                                                        const newBullets = [...item.bullets];
+                                                        newBullets.splice(bIdx, 1);
+                                                        updateCustomItem(sIdx, iIdx, 'bullets', newBullets);
+                                                    }}
+                                                    onEnter={() => {
+                                                        const newBullets = [...item.bullets, 'New Detail'];
+                                                        updateCustomItem(sIdx, iIdx, 'bullets', newBullets);
+                                                    }}
+                                                    readOnly={isPreview}
+                                                />
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                                {!isPreview && (
+                                    <button onClick={() => addCustomItem(sIdx)} className="w-full py-2 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 hover:border-indigo-300 hover:text-indigo-500 flex items-center justify-center gap-2 transition-colors mt-2 opacity-50 hover:opacity-100">
+                                        <Plus className="w-4 h-4" /> Add Item
+                                    </button>
+                                )}
+                            </div>
+                        </Section>
+                        {/* Editable Title Overlay */}
+                        {!isPreview && (
+                            <EditableText
+                                initialValue={section.title}
+                                onSave={(val) => updateCustomSectionTitle(sIdx, val)}
+                                className="absolute -top-7 left-0 text-xs font-bold text-gray-400 uppercase tracking-wider hover:text-indigo-600 bg-white/80 px-1 cursor-pointer"
+                            />
+                        )}
+                    </div>
+                ))}
+
+                {!isPreview && (
+                    <button
+                        onClick={addCustomSection}
+                        className="w-full py-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-indigo-500 hover:text-indigo-600 flex items-center justify-center gap-2 transition-all mt-8 font-medium hover:bg-gray-50"
+                    >
+                        <Plus className="w-5 h-5" /> Add Custom Section
+                    </button>
                 )}
             </div>
         </div>

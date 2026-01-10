@@ -46,7 +46,7 @@ export function EditableBullet({ initialValue, onSave, onDelete, onEnter, readOn
     };
 
     if (readOnly) {
-        return <li className="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-gray-400 text-gray-700">{value}</li>;
+        return <li className="relative pl-4 before:content-['•'] before:absolute before:left-0 before:top-0 before:text-gray-800 text-gray-800 leading-inherit">{value}</li>;
     }
 
     if (isEditing) {
@@ -59,9 +59,9 @@ export function EditableBullet({ initialValue, onSave, onDelete, onEnter, readOn
                     onChange={(e) => setValue(e.target.value)}
                     onBlur={handleBlur}
                     onKeyDown={handleKeyDown}
-                    className="ml-3 w-full bg-white border border-blue-400 rounded px-1 outline-none text-gray-700"
+                    className="w-full bg-white border border-blue-400 rounded px-1 outline-none text-gray-700"
                 />
-                <div className="absolute right-0 top-0 hidden group-hover:flex gap-1 z-10">
+                <div className="absolute right-0 top-0 hidden group-hover:flex z-10">
                     <button onMouseDown={(e) => { e.preventDefault(); onDelete(); }} className="text-gray-400 hover:text-red-500"><X className="w-3 h-3" /></button>
                 </div>
             </li>

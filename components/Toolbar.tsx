@@ -5,7 +5,11 @@ import { Resume } from '@/types/resume';
 
 interface SettingsToolbarProps {
     settings: {
-        font: 'sans' | 'serif' | 'mono' | 'montserrat';
+        font: 'inter' | 'merriweather' | 'lora' | 'montserrat' | 'open-sans' | 'roboto' | 'roboto-condensed';
+        density: 'comfortable' | 'compact' | 'dense';
+        lineHeight: number;
+        letterSpacing: number;
+        sectionSpacing: number;
         visibleSections: {
             summary: boolean;
             experience: boolean;
@@ -82,19 +86,96 @@ export function SettingsToolbar({ settings, onUpdate, onExport }: SettingsToolba
                         <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                             <Type className="w-3 h-3" /> Typography
                         </h3>
-                        <div className="grid grid-cols-2 gap-2">
-                            {['montserrat', 'serif', 'sans', 'mono'].map((font) => (
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                            {[
+                                { id: 'inter', label: 'Clean Sans' },
+                                { id: 'merriweather', label: 'Classic Serif' },
+                                { id: 'lora', label: 'Modern Serif' },
+                                { id: 'montserrat', label: 'Montserrat' },
+                                { id: 'open-sans', label: 'Humanist' },
+                                { id: 'roboto', label: 'Neutral' },
+                                { id: 'roboto-condensed', label: 'Condensed' }
+                            ].map((font) => (
                                 <button
-                                    key={font}
-                                    onClick={() => onUpdate({ ...settings, font })}
-                                    className={`px-3 py-2 text-sm border rounded-lg transition-all text-left capitalize ${settings.font === font
+                                    key={font.id}
+                                    onClick={() => onUpdate({ ...settings, font: font.id })}
+                                    className={`px-3 py-2 text-xs border rounded-lg transition-all text-left ${settings.font === font.id
                                         ? 'border-indigo-600 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600'
                                         : 'border-gray-200 hover:border-gray-300 text-gray-600'
                                         }`}
                                 >
-                                    {font}
+                                    {font.label}
                                 </button>
                             ))}
+                        </div>
+
+                        {/* Density */}
+                        <div className="flex bg-gray-100 p-1 rounded-lg mb-4">
+                            {[
+                                { id: 'comfortable', label: 'Comfy' },
+                                { id: 'compact', label: 'Compact' },
+                                { id: 'dense', label: 'Dense' }
+                            ].map((d) => (
+                                <button
+                                    key={d.id}
+                                    onClick={() => onUpdate({ ...settings, density: d.id })}
+                                    className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${settings.density === d.id
+                                        ? 'bg-white text-indigo-600 shadow-sm'
+                                        : 'text-gray-500 hover:text-gray-700'
+                                        }`}
+                                >
+                                    {d.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Fine Tuning */}
+                        <div className="space-y-3">
+                            <div>
+                                <div className="flex justify-between text-[10px] text-gray-500 uppercase tracking-wider mb-1">
+                                    <span>Line Spacing</span>
+                                    <span>{settings.lineHeight.toFixed(2)}</span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="1.0"
+                                    max="2.0"
+                                    step="0.05"
+                                    value={settings.lineHeight}
+                                    onChange={(e) => onUpdate({ ...settings, lineHeight: parseFloat(e.target.value) })}
+                                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                                />
+                            </div>
+                            <div>
+                                <div className="flex justify-between text-[10px] text-gray-500 uppercase tracking-wider mb-1">
+                                    <span>Letter Spacing</span>
+                                    <span>{settings.letterSpacing}em</span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="-0.05"
+                                    max="0.1"
+                                    step="0.01"
+                                    value={settings.letterSpacing}
+                                    onChange={(e) => onUpdate({ ...settings, letterSpacing: parseFloat(e.target.value) })}
+                                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                                />
+                            </div>
+                            <div>
+                                <div className="flex justify-between text-[10px] text-gray-500 uppercase tracking-wider mb-1">
+                                    <span>Section Spacing</span>
+                                    <span>{settings.sectionSpacing.toFixed(1)}rem</span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="0.5"
+                                    max="3.0"
+                                    step="0.1"
+                                    value={settings.sectionSpacing}
+                                    onChange={(e) => onUpdate({ ...settings, sectionSpacing: parseFloat(e.target.value) })}
+                                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                                />
+                            </div>
                         </div>
                     </div>
 

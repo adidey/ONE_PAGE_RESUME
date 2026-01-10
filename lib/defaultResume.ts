@@ -60,5 +60,6 @@ export const defaultResume: Resume = {
         programming: ["JavaScript", "TypeScript", "Python", "Java", "SQL"],
         design: ["System Design", "API Design", "UI/UX Principles"],
         tools: ["Git", "Docker", "AWS", "Jira", "Figma"]
-    }
+    },
+    customSections: []
 };

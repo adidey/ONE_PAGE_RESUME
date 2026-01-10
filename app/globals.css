@@ -10,20 +10,63 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+
+  /* Resume Variables Defaults */
+  --resume-font-family: var(--font-inter);
+  --resume-font-size: 0.85rem;
+  --resume-line-height: 1.5;
+  --resume-section-gap: 1.5rem;
+  --resume-item-gap: 0.75rem;
+  --resume-bullet-gap: 0.4rem;
 }
+
+/* Density Presets */
+.density-comfortable {
+  --resume-font-size: 0.85rem;
+  /* ~13.6px */
+  --resume-line-height: 1.6;
+  --resume-section-gap: 1.5rem;
+  --resume-item-gap: 1rem;
+  --resume-bullet-gap: 0.5rem;
+}
+
+.density-compact {
+  --resume-font-size: 0.8rem;
+  /* ~12.8px */
+  --resume-line-height: 1.4;
+  --resume-section-gap: 1.1rem;
+  --resume-item-gap: 0.6rem;
+  --resume-bullet-gap: 0.3rem;
+}
+
+.density-dense {
+  --resume-font-size: 0.75rem;
+  /* ~12px */
+  --resume-line-height: 1.25;
+  --resume-section-gap: 0.85rem;
+  --resume-item-gap: 0.4rem;
+  --resume-bullet-gap: 0.15rem;
+}
+
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background-image: radial-gradient(var(--foreground) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  background-color: #f8fafc;
+  /* slightly off-white for contrast */
   -webkit-font-smoothing: antialiased;
+}
 
-  /* Halftone Background */
-  background-color: #f3f4f6;
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: 20px 20px;
+@media print {
+  body {
+    background: white;
+    background-image: none;
+  }
 }
 
 /* @keyframes halftoneMove removed for simpler, non-distracting background as per static screenshot aesthetic */
@@ -70,8 +113,9 @@ body {
 
 /* Edit Mode */
 .view-mode-edit .resume-canvas {
-  height: var(--a4-height);
-  overflow: hidden;
+  min-height: var(--a4-height);
+  height: auto;
+  overflow: visible;
 }
 
 /* Preview Mode */
