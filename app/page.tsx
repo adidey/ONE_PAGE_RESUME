@@ -111,7 +111,7 @@ export default function Home() {
   }
 
   return (
-    <main className={`min-h-screen bg-gray-50/50 print:bg-white view-mode-${settings.viewMode} ${!settings.viewMode.includes('preview') ? 'md:pl-80' : ''
+    <main className={`h-screen overflow-y-auto bg-gray-50/50 print:bg-white view-mode-${settings.viewMode} ${!settings.viewMode.includes('preview') ? 'md:pl-80' : ''
       }`}>
 
       {/* Mobile Menu Button - Visible only on mobile when not in preview */}
