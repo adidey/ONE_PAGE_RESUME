@@ -109,20 +109,15 @@ export default function Home() {
   }
 
   return (
-    <main className={`min-h-screen flex flex-col items-center py-8 print:py-0 print:bg-white view-mode-${settings.viewMode} pl-80`}>
-      {!settings.viewMode.includes('preview') && (
-        <div className="fixed top-0 left-0 right-0 p-4 z-40 flex justify-between items-center pointer-events-none">
-          <div className="text-xs font-bold tracking-widest text-gray-400 uppercase ml-20">
-            Resume Editor
-          </div>
-          {isOverflowing && (
-            <div className="bg-amber-50 text-amber-600 px-4 py-1.5 rounded-full text-xs font-medium border border-amber-200 shadow-sm flex items-center gap-2 pointer-events-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Exceeds one page
-            </div>
-          )}
-        </div>
-      )}
+    <main className={`min-h-screen bg-gray-50/50 print:bg-white view-mode-${settings.viewMode} ${!settings.viewMode.includes('preview') ? 'pl-80' : ''
+      }`}>
+      {/* 
+        We remove the fixed "Resume Editor" header overlay if it blocks things, 
+        or ensure it isn't full width if we want it. 
+        Actually, the user complained buttons occupy space. 
+        Let's just keep the toolbar and the resume. 
+        The "Resume Editor" text was just a label.
+      */}
 
       <SettingsToolbar
         settings={settings}
@@ -130,8 +125,17 @@ export default function Home() {
         onExport={() => window.print()}
       />
 
-      <div className="flex flex-col gap-4 items-center resume-wrapper mt-8 print:mt-0 pb-32">
-        <div ref={resumeRef} className="origin-top transition-transform duration-200">
+      {/* Main Content Area */}
+      <div className="w-full min-h-screen flex flex-col items-center py-12 print:py-0 pb-32">
+        {/* Overflow Warning - Positioned absolute or sticky relative to this area, not fixed screen-wide */}
+        {isOverflowing && !settings.viewMode.includes('preview') && (
+          <div className="sticky top-4 z-30 mb-4 bg-amber-50 text-amber-600 px-4 py-1.5 rounded-full text-xs font-medium border border-amber-200 shadow-sm flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+            Exceeds one page
+          </div>
+        )}
+
+        <div ref={resumeRef} className="origin-top transition-transform duration-200 shadow-2xl print:shadow-none">
           <Resume
             data={resume}
             onChange={setResume}

@@ -93,8 +93,7 @@ export function SettingsToolbar({ settings, onUpdate, onExport }: SettingsToolba
                                 { id: 'lora', label: 'Modern Serif' },
                                 { id: 'montserrat', label: 'Montserrat' },
                                 { id: 'open-sans', label: 'Humanist' },
-                                { id: 'roboto', label: 'Neutral' },
-                                { id: 'roboto-condensed', label: 'Condensed' }
+                                { id: 'roboto', label: 'Neutral' }
                             ].map((font) => (
                                 <button
                                     key={font.id}

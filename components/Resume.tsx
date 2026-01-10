@@ -104,7 +104,8 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
         const newSection = {
             id: crypto.randomUUID(),
             title: 'New Section',
-            items: []
+            items: [],
+            visible: true
         };
         // @ts-ignore
         onChange({ ...data, customSections: [...(data.customSections || []), newSection] });
@@ -150,56 +151,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
         onChange({ ...data, customSections: sections });
     }
 
-    // Custom Section Handlers
-    const addCustomSection = () => {
-        const newSection = {
-            id: crypto.randomUUID(),
-            title: 'New Section',
-            items: []
-        };
-        // @ts-ignore
-        onChange({ ...data, customSections: [...(data.customSections || []), newSection] });
-    };
 
-    const updateCustomSectionTitle = (index: number, title: string) => {
-        // @ts-ignore
-        const sections = [...(data.customSections || [])];
-        sections[index] = { ...sections[index], title };
-        // @ts-ignore
-        onChange({ ...data, customSections: sections });
-    };
-
-    const addCustomItem = (sectionIndex: number) => {
-        // @ts-ignore
-        const sections = [...(data.customSections || [])];
-        sections[sectionIndex].items.push({
-            title: 'Title',
-            subtitle: 'Subtitle',
-            date: 'Dates',
-            bullets: ['Detail']
-        });
-        // @ts-ignore
-        onChange({ ...data, customSections: sections });
-    };
-
-    const updateCustomItem = (sectionIndex: number, itemIndex: number, field: string, value: any) => {
-        // @ts-ignore
-        const sections = [...(data.customSections || [])];
-        sections[sectionIndex].items[itemIndex] = {
-            ...sections[sectionIndex].items[itemIndex],
-            [field]: value
-        };
-        // @ts-ignore
-        onChange({ ...data, customSections: sections });
-    };
-
-    const removeCustomSection = (index: number) => {
-        // @ts-ignore
-        const sections = [...(data.customSections || [])];
-        sections.splice(index, 1);
-        // @ts-ignore
-        onChange({ ...data, customSections: sections });
-    }
 
     const getFontClass = () => {
         switch (settings.font) {
@@ -458,7 +410,7 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
 
                 {/* Custom Sections */}
                 {/* @ts-ignore */}
-                {(data.customSections || []).map((section, sIdx) => (
+                {(data.customSections || []).filter(s => s.visible).map((section, sIdx) => (
                     <div key={section.id} className="relative group/section">
                         {!isPreview && (
                             <div className="absolute -left-6 top-1 opacity-0 group-hover/section:opacity-100 transition-opacity">
@@ -467,7 +419,13 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                                 </button>
                             </div>
                         )}
-                        <Section title={section.title}>
+                        <Section title={
+                            <EditableText
+                                initialValue={section.title}
+                                onSave={(val) => updateCustomSectionTitle(sIdx, val)}
+                                readOnly={isPreview}
+                            />
+                        }>
                             <div className="flex flex-col gap-[var(--resume-item-gap)]">
                                 {section.items.map((item: any, iIdx: number) => (
                                     <div key={iIdx} className={`group relative transition-all ${!isPreview && 'hover:bg-gray-50 -ml-2 -mr-2 p-2 rounded'}`}>
@@ -510,14 +468,6 @@ export function Resume({ data, onChange, settings }: ResumeProps) {
                                 )}
                             </div>
                         </Section>
-                        {/* Editable Title Overlay */}
-                        {!isPreview && (
-                            <EditableText
-                                initialValue={section.title}
-                                onSave={(val) => updateCustomSectionTitle(sIdx, val)}
-                                className="absolute -top-7 left-0 text-xs font-bold text-gray-400 uppercase tracking-wider hover:text-indigo-600 bg-white/80 px-1 cursor-pointer"
-                            />
-                        )}
                     </div>
                 ))}
 
