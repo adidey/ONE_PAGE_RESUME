@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Montserrat, Merriweather, Lora, Inter, Open_Sans, Roboto, Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 
