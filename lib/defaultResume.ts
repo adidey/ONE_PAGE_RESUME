@@ -4,6 +4,7 @@ export const defaultResume: Resume = {
     header: {
         name: "Alex Johnson",
         email: "alex.johnson@example.com",
+        phone: "(555) 123-4567",
         linkedin: "linkedin.com/in/alexjohnson",
         location: "San Francisco, CA",
         portfolio: "alexjohnson.dev"
