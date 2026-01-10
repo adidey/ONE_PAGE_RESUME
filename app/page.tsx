@@ -111,20 +111,27 @@ export default function Home() {
   }
 
   return (
-    <main className={`min-h-screen bg-gray-50/50 print:bg-white view-mode-${settings.viewMode} ${!settings.viewMode.includes('preview') ? 'pl-80' : ''
+    <main className={`min-h-screen bg-gray-50/50 print:bg-white view-mode-${settings.viewMode} ${!settings.viewMode.includes('preview') ? 'md:pl-80' : ''
       }`}>
-      {/* 
-        We remove the fixed "Resume Editor" header overlay if it blocks things, 
-        or ensure it isn't full width if we want it. 
-        Actually, the user complained buttons occupy space. 
-        Let's just keep the toolbar and the resume. 
-        The "Resume Editor" text was just a label.
-      */}
+
+      {/* Mobile Menu Button - Visible only on mobile when not in preview */}
+      {!settings.viewMode.includes('preview') && (
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="md:hidden fixed top-4 left-4 z-40 p-2 bg-white rounded-lg shadow-sm border border-gray-200 text-gray-700 hover:text-indigo-600 transition-colors"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
 
       <SettingsToolbar
         settings={settings}
         onUpdate={setSettings}
         onExport={() => window.print()}
+        data={resume}
+        onUpdateData={setResume}
+        isMobileOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
       />
 
       {/* Main Content Area */}
