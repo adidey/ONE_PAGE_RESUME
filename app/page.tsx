@@ -6,10 +6,12 @@ import { Resume } from '@/components/Resume';
 import { defaultResume } from '@/lib/defaultResume';
 import { Resume as ResumeType } from '@/types/resume';
 import { SkeletonResume } from '@/components/SkeletonResume';
+import { Menu } from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState<ResumeType>(defaultResume);
   const [loading, setLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [settings, setSettings] = useState<{
     font: 'inter' | 'merriweather' | 'lora' | 'montserrat' | 'open-sans' | 'roboto' | 'roboto-condensed';
     density: 'comfortable' | 'compact' | 'dense';

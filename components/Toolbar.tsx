@@ -62,6 +62,8 @@ export function SettingsToolbar({ settings, onUpdate, onExport }: SettingsToolba
                     Resume Editor
                 </h2>
 
+                </div>
+
                 <div className="space-y-6">
                     {/* View Mode Toggle */}
                     <div className="bg-gray-100 p-1 rounded-lg flex relative">
@@ -241,6 +243,6 @@ export function SettingsToolbar({ settings, onUpdate, onExport }: SettingsToolba
                     Use &quot;Save as PDF&quot; in dialog
                 </p>
             </div>
-        </aside>
+        </aside >
     );
 }
