@@ -9,6 +9,7 @@ export interface CustomSection {
   id: string;
   title: string;
   items: CustomSectionItem[];
+  visible: boolean;
 }
 
 export interface Resume {
@@ -51,4 +52,6 @@ export interface Resume {
     design: string[];
     tools: string[];
   };
+
+  customSections: CustomSection[];
 }
