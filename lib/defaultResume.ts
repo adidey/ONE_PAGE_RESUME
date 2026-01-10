@@ -3,9 +3,9 @@ import { Resume } from '@/types/resume';
 export const defaultResume: Resume = {
     header: {
         name: "Aditya Dey",
-        email: "aditya.dey@example.com",
+        email: "adidey27@gmail.com",
         phone: "(555) 123-4567",
-        linkedin: "linkedin.com/in/adityadey",
+        linkedin: "linkedin.com/in/adityadey27",
         location: "San Francisco, CA",
         portfolio: "adityadey.dev"
     },
