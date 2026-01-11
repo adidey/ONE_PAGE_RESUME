@@ -2,7 +2,7 @@
 
 A privacy-focused, single-page resume editor built with Next.js and Tailwind CSS. Design your resume with real-time preview, multiple fonts, and section toggles, then export directly to PDF or LaTeX.
 
-**Live Demo:** [Deploy with Vercel]((https://singlepageresume.vercel.app/))
+**Live Demo:** [Deploy with Vercel]([(https://singlepageresume.vercel.app/)])
 
 ## Features
 
