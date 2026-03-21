@@ -58,9 +58,40 @@ export default function Home() {
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   useEffect(() => {
-    // Simulate loading for better UX
-    setTimeout(() => setLoading(false), 800);
+    // Load from local storage
+    const savedResume = localStorage.getItem('resume-data');
+    if (savedResume) {
+      try {
+        setResume(JSON.parse(savedResume));
+      } catch (e) {
+        console.error("Failed to parse saved resume data", e);
+      }
+    }
+
+    const savedSettings = localStorage.getItem('resume-settings');
+    if (savedSettings) {
+      try {
+        setSettings(JSON.parse(savedSettings));
+      } catch (e) {
+        console.error("Failed to parse saved resume settings", e);
+      }
+    }
+
+    setLoading(false);
   }, []);
+
+  // Save to local storage on change
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem('resume-data', JSON.stringify(resume));
+    }
+  }, [resume, loading]);
+
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem('resume-settings', JSON.stringify(settings));
+    }
+  }, [settings, loading]);
 
   useEffect(() => {
     const checkOverflow = () => {
